@@ -3,7 +3,7 @@
   "name": "json-schema-api",
   "title": "JSON Schema API",
   "description": "Developer power tool: Generate, validate, diff, convert, mock, merge, and document JSON Schemas. REST + MCP.",
-  "version": "1.0.0",
+  "version": "1.0",
   "dockerfile": "../Dockerfile",
   "input": {
     "schemaVersion": 1,
