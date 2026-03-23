@@ -1,0 +1,27 @@
+{
+  "name": "json-schema-api",
+  "version": "1.0.0",
+  "description": "Developer power tool: Generate, validate, diff, convert, and document JSON Schemas. REST API + MCP server.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node test/test.js",
+    "dev": "node src/server.js"
+  },
+  "keywords": [
+    "json-schema",
+    "validation",
+    "typescript",
+    "mock-data",
+    "openapi",
+    "mcp",
+    "schema-diff",
+    "schema-generation"
+  ],
+  "author": "lazymac",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.0"
+  }
+}

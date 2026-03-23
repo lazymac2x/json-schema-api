@@ -1,0 +1,15 @@
+{
+  "actorSpecification": 1,
+  "name": "json-schema-api",
+  "title": "JSON Schema API",
+  "description": "Developer power tool: Generate, validate, diff, convert, mock, merge, and document JSON Schemas. REST + MCP.",
+  "version": "1.0.0",
+  "dockerfile": "../Dockerfile",
+  "input": {
+    "schemaVersion": 1,
+    "title": "Input",
+    "description": "API runs as HTTP server on port 3000. Use REST endpoints or MCP at /mcp.",
+    "type": "object",
+    "properties": {}
+  }
+}

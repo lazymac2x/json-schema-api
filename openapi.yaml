@@ -1,0 +1,290 @@
+openapi: 3.0.3
+info:
+  title: JSON Schema API
+  description: |
+    Developer power tool for JSON Schema operations.
+    Generate, validate, diff, convert to TypeScript, generate mock data, merge, and document JSON Schemas.
+    Also includes OpenAPI schema extraction.
+  version: 1.0.0
+  contact:
+    name: lazymac
+servers:
+  - url: http://localhost:3000
+    description: Local development
+paths:
+  /:
+    get:
+      summary: Health check & API info
+      operationId: getInfo
+      responses:
+        '200':
+          description: API information
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /generate:
+    post:
+      summary: Generate JSON Schema from sample data
+      operationId: generateSchema
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  description: Any valid JSON value to infer schema from
+                options:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    inferEnums:
+                      type: boolean
+                    enumThreshold:
+                      type: integer
+              required: [data]
+      responses:
+        '200':
+          description: Generated JSON Schema (draft-07)
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /validate:
+    post:
+      summary: Validate JSON data against a schema
+      operationId: validateJson
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  description: JSON data to validate
+                schema:
+                  type: object
+                  description: JSON Schema to validate against
+              required: [data, schema]
+      responses:
+        '200':
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  valid:
+                    type: boolean
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                        keyword:
+                          type: string
+
+  /diff:
+    post:
+      summary: Compare two schemas
+      operationId: diffSchemas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                schemaA:
+                  type: object
+                schemaB:
+                  type: object
+              required: [schemaA, schemaB]
+      responses:
+        '200':
+          description: Schema diff result
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /to-typescript:
+    post:
+      summary: Convert schema to TypeScript interfaces
+      operationId: schemaToTypescript
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                schema:
+                  type: object
+                options:
+                  type: object
+                  properties:
+                    rootName:
+                      type: string
+                    exportTypes:
+                      type: boolean
+              required: [schema]
+      responses:
+        '200':
+          description: TypeScript output
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  typescript:
+                    type: string
+
+  /to-mock:
+    post:
+      summary: Generate mock data from schema
+      operationId: schemaToMock
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                schema:
+                  type: object
+                options:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    seed:
+                      type: integer
+              required: [schema]
+      responses:
+        '200':
+          description: Generated mock data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mock: {}
+
+  /merge:
+    post:
+      summary: Merge multiple schemas
+      operationId: mergeSchemas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                schemas:
+                  type: array
+                  items:
+                    type: object
+              required: [schemas]
+      responses:
+        '200':
+          description: Merged schema
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /to-docs:
+    post:
+      summary: Generate Markdown documentation from schema
+      operationId: schemaToDocs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                schema:
+                  type: object
+                options:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+              required: [schema]
+      responses:
+        '200':
+          description: Markdown documentation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  markdown:
+                    type: string
+
+  /extract-openapi:
+    post:
+      summary: Extract schemas from OpenAPI spec
+      operationId: extractFromOpenApi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                spec:
+                  type: object
+                  description: OpenAPI 3.x specification object
+              required: [spec]
+      responses:
+        '200':
+          description: Extracted schemas and endpoints
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /mcp:
+    post:
+      summary: MCP JSON-RPC 2.0 endpoint
+      operationId: mcpEndpoint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                jsonrpc:
+                  type: string
+                  enum: ['2.0']
+                id:
+                  type: [string, integer]
+                method:
+                  type: string
+                params:
+                  type: object
+              required: [jsonrpc, method]
+      responses:
+        '200':
+          description: JSON-RPC 2.0 response
+          content:
+            application/json:
+              schema:
+                type: object

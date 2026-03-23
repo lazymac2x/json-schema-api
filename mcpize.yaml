@@ -1,0 +1,17 @@
+name: json-schema-api
+description: >
+  Developer power tool for JSON Schema: generate schemas from data, validate,
+  diff, convert to TypeScript, generate mock data, merge, and document.
+  Smart inference detects emails, dates, URIs, UUIDs, IPs, and enums.
+version: 1.0.0
+server:
+  command: node
+  args: [src/server.js]
+  env:
+    PORT: "3000"
+  healthCheck:
+    url: http://localhost:3000/
+    interval: 5
+mcp:
+  endpoint: /mcp
+  transport: http
